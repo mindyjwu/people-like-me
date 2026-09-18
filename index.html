@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>People Like Me</title>
+<meta name="description" content="A vetted provider directory and community for women who invest in themselves, organized by the facets that decide whether advice works for you: hair type, skin tone, eye shape, neighborhood.">
+<meta name="theme-color" content="#F5F2F7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141018" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="People Like Me">
+<meta property="og:title" content="People Like Me">
+<meta property="og:description" content="Beauty and body providers ranked by people who actually share your hair, skin and eye shape. NYC demo.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <a class="brand" href="./">People <em>Like</em> Me</a>
+    <nav aria-label="Sections">
+      <button data-tab="find" class="on"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Find</button>
+      <button data-tab="ask"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>Ask</button>
+      <button data-tab="upkeep"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Upkeep</button>
+      <button data-tab="me"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Me</button>
+    </nav>
+    <div class="facetcard"><div class="k">Your facets</div><div class="chips" id="side-facets"></div><button data-tab="me">Edit</button></div>
+    <div class="foot">NYC demo. Every provider, member and review is invented. <a href="playbook.html">Read the playbook</a> · <a href="https://github.com/mindyjwu/people-like-me">Source</a></div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <a class="brand" href="./">People <em>Like</em> Me</a>
+      <button class="youpill" data-tab="me" aria-label="Edit your facets"><div class="av"></div><span id="you-summary"></span></button>
+    </div>
+    <div id="screen"></div>
+  </main>
+</div>
+<nav class="tabbar" aria-label="Sections">
+  <button data-tab="find" class="on"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Find</button>
+  <button data-tab="ask"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>Ask</button>
+  <button data-tab="upkeep"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Upkeep</button>
+  <button data-tab="me"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Me</button>
+</nav>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

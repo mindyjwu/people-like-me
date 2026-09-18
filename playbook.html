@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<title>The Specificity Playbook</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F7F5F8;--surface:#FFFFFF;--ink:#221C26;--muted:#6E6474;--line:#E2DCE6;
+  --accent:#B5304F;--accent-soft:#F6E3E8;--good:#2F5D50;--good-soft:#E1EEE9;--warn:#8A5A12;--warn-soft:#F5EAD3;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#17131A;--surface:#221C26;--ink:#F1ECF3;--muted:#A79DAD;--line:#3A3140;
+  --accent:#E2647F;--accent-soft:#3B2230;--good:#6BBF9E;--good-soft:#1E3A31;--warn:#E0B060;--warn-soft:#3A2F17;
+}}
+:root[data-theme="dark"]{
+  --bg:#17131A;--surface:#221C26;--ink:#F1ECF3;--muted:#A79DAD;--line:#3A3140;
+  --accent:#E2647F;--accent-soft:#3B2230;--good:#6BBF9E;--good-soft:#1E3A31;--warn:#E0B060;--warn-soft:#3A2F17;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:"Public Sans",system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.55;padding-inline:20px;padding-block:0 80px}
+.wrap{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:56px}
+@media(max-width:820px){.wrap{grid-template-columns:1fr;gap:0}nav.toc{display:none}}
+nav.toc{position:sticky;top:24px;align-self:start;padding-top:64px;font-size:13px}
+nav.toc .k{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+nav.toc a{display:block;color:var(--muted);text-decoration:none;padding:5px 0;border-left:2px solid var(--line);padding-left:12px}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent);border-color:var(--accent);outline:none}
+main{max-width:70ch}
+header{padding-block:64px 40px;border-bottom:1px solid var(--line);margin-bottom:40px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:clamp(38px,6vw,56px);line-height:1.02;margin:12px 0 18px;text-wrap:balance;letter-spacing:-.01em}
+.lede{font-size:18px;color:var(--muted);max-width:60ch}
+.assume{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px}
+.assume span{font-size:12.5px;padding:5px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:var(--surface)}
+h2{font-family:"DM Serif Display",Georgia,serif;font-weight:400;font-size:30px;line-height:1.1;margin:56px 0 16px;text-wrap:balance}
+h2:first-of-type{margin-top:0}
+h3{font-size:15px;font-weight:600;margin:28px 0 8px;letter-spacing:.005em}
+p{margin:0 0 14px}
+strong{font-weight:600}
+ul{padding-left:20px;margin:0 0 14px}li{margin-bottom:6px}
+.callout{background:var(--accent-soft);border-left:3px solid var(--accent);padding:14px 16px;border-radius:0 6px 6px 0;margin:18px 0}
+.callout.good{background:var(--good-soft);border-color:var(--good)}
+.callout.warn{background:var(--warn-soft);border-color:var(--warn)}
+.callout p:last-child{margin:0}
+table{width:100%;border-collapse:collapse;margin:16px 0 22px;font-size:14.5px;background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.tw{overflow-x:auto}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.num{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.facets{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:14px 0 20px}
+.facet{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.facet .n{font-weight:600;font-size:14px}
+.facet .v{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}
+.phase{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--line)}
+.phase:last-of-type{border-bottom:1px solid var(--line)}
+.phase .d{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--accent);padding-top:3px}
+.phase ul{margin:0}
+@media(max-width:480px){.phase{grid-template-columns:1fr;gap:6px}}
+.loop{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 22px}
+@media(max-width:560px){.loop{grid-template-columns:1fr}}
+.loop div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px}
+.loop .t{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.risk{padding:12px 0;border-top:1px solid var(--line)}
+.risk:last-child{border-bottom:1px solid var(--line)}
+.risk b{display:block;font-weight:600;margin-bottom:3px}
+.risk p{margin:0;color:var(--muted);font-size:15px}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<p style="font-family:IBM Plex Mono,monospace;font-size:12px;margin:18px 0 -40px"><a href="./" style="color:#B02D4E;text-decoration:none">← Back to the app</a></p>
+
+<div class="wrap">
+<nav class="toc" aria-label="Sections">
+  <div class="k">Sections</div>
+  <a href="#supply">Seeding supply</a>
+  <a href="#loop">Directory × community</a>
+  <a href="#taxonomy">Taxonomy</a>
+  <a href="#content">Cold-start content</a>
+  <a href="#moderation">Moderation costs</a>
+  <a href="#build">First 90 days</a>
+  <a href="#risks">Risks</a>
+</nav>
+<main>
+<header>
+  <div class="eyebrow">Layer two · vetted providers + community</div>
+  <h1>The Specificity Playbook</h1>
+  <p class="lede">How to seed supply in one city, build a taxonomy where segmentation actually works, and ship the directory and community in ninety days.</p>
+  <div class="assume"><span>Solo builder</span><span>Spend tracker already live</span><span>Manhattan below 96th + Williamsburg/Greenpoint</span><span>Sep 2026</span></div>
+</header>
+
+<h2 id="supply">Seeding supply in one city</h2>
+<p><strong>Start with three verticals, not five.</strong> Colorists, nail techs, and brow/lash techs have the highest churn, the strongest dependence on word of mouth, and the weakest platform loyalty. Derms are low churn and already served by Zocdoc and RealSelf. Trainers and tailors come after the loop is proven.</p>
+<p><strong>Seed supply from demand, not from scraping.</strong> Recruit the founding member cohort first, then ask each one who she already goes to and recruit those providers. The directory is vetted by construction. Fill gaps by compiling from Instagram, Booksy, Fresha, StyleSeat, and Yelp.</p>
+<div class="callout"><p><strong>Do not build booking.</strong> Link out to whatever the provider already uses. Booking is a commodity where incumbents own the lock-in. Your product is matching, so the provider profile is structured around who they are good for, not around their calendar.</p></div>
+<h3>The provider pitch is fit, not volume</h3>
+<p>A verified profile with "experienced with" tags (lived-in color on level 2 Asian hair, hand-tied extensions on fine hair, brow mapping for hooded eyes) plus a portfolio sorted by client attributes. The value to them: fewer mismatched consults, clients who arrive pre-qualified.</p>
+<h3>Define "vetted" precisely</h3>
+<ul>
+<li>Three attributed reviews from members with declared facets.</li>
+<li>A portfolio with at least six outcome photos.</li>
+<li>An automated license check. New York State cosmetology and nail licenses are publicly searchable through the Department of State, so this is a nightly job.</li>
+</ul>
+<h3>Make churn a feature</h3>
+<p>Members follow providers. A provider move is a first-class event that triggers notifications and a community thread. Run a monthly provider check-in and let members flag moves. This is the recurring hook that Reddit cannot offer.</p>
+<div class="tw"><table>
+<tr><th>Day-90 supply target</th><th>Number</th></tr>
+<tr><td>Providers across three verticals</td><td class="num">150</td></tr>
+<tr><td>Providers with a verified license</td><td class="num">80%</td></tr>
+<tr><td>Providers with three or more attributed reviews</td><td class="num">60</td></tr>
+<tr><td>Neighborhoods with five or more providers per vertical</td><td class="num">8</td></tr>
+</table></div>
+
+<h2 id="loop">How the directory and community reinforce each other</h2>
+<div class="loop">
+<div><div class="t">Directory → community</div>Search intent ("colorist for 4C hair Brooklyn") lands on a provider page. Every provider page shows only the threads and reviews from members who share the vertical-relevant facets. The reader joins to ask her segment.</div>
+<div><div class="t">Community → directory</div>Every post that mentions a provider auto-links to the provider entity. Threads become long-tail directory content and SEO pages without anyone writing a listing.</div>
+<div><div class="t">Churn → both</div>"Where did Dani go?" is a community event type. The answer updates the provider record and notifies followers. Re-discovery is recurring, so the loop keeps turning.</div>
+<div><div class="t">Spend tracker → trust</div>A review tied to a real transaction is something no forum can offer. Verified spend gates review weight and unlocks the post-transaction prompt.</div>
+</div>
+
+<h2 id="taxonomy">Taxonomy that makes segmentation work</h2>
+<p><strong>Separate three layers.</strong> Member attribute facets are the segmentation variables. The service and provider ontology is what gets filtered. Content types are the third layer. Segmentation lives only in facets and is applied as a lens over the other two.</p>
+<h3>Facets, each with a small controlled vocabulary and a reference chart</h3>
+<div class="facets">
+<div class="facet"><div class="n">Hair</div><div class="v">type 1a–4c · density · porosity · texture · chemical history · gray coverage</div></div>
+<div class="facet"><div class="n">Skin</div><div class="v">Fitzpatrick I–VI · undertone · concerns: melasma, PIH, acne, rosacea, sensitivity</div></div>
+<div class="facet"><div class="n">Eye shape</div><div class="v">monolid · hooded · deep-set · almond · round · downturned</div></div>
+<div class="facet"><div class="n">Ancestry</div><div class="v">multi-select · optional · plain explanation of why it is asked</div></div>
+<div class="facet"><div class="n">Body</div><div class="v">height band · frame · proportions · never weight</div></div>
+<div class="facet"><div class="n">Face + brow</div><div class="v">face shape · brow density · kept minimal</div></div>
+<div class="facet"><div class="n">Context</div><div class="v">neighborhood · budget band</div></div>
+</div>
+<h3>Three admission rules for any facet</h3>
+<ul>
+<li>A provider outcome must plausibly depend on it.</li>
+<li>A member must be able to self-assess it from a chart.</li>
+<li>The resulting segments must have at least thirty NYC members, or the facet gets collapsed.</li>
+</ul>
+<div class="callout good"><p><strong>Do not create a forum per segment.</strong> Empty rooms kill communities. Use one feed where every post carries a frozen snapshot of the author's facets at posting time (hair and skin change). Members filter by "people like me" with a weighted similarity score, weights set per vertical: hair facets dominate for colorists, eye shape for lash, skin for derms. Show "matches you on 5 of 7" rather than a hard filter.</p></div>
+<p>Reviews count toward a provider's "for people like you" score only when the reviewer shares the vertical-relevant facets. Store facets as versioned key-value pairs, because the taxonomy will change and you will migrate.</p>
+<div class="callout warn"><p><strong>Ancestry needs one hard rule.</strong> Providers tag "experienced with," never "serves only," and providers can never filter clients. Members self-segment. Under the NYC Human Rights Law the opposite design is a liability.</p></div>
+<div class="tw"><table>
+<tr><th>Vertical</th><th>Facets that carry weight</th><th>Facets that don't</th></tr>
+<tr><td>Colorist</td><td>hair type, texture, chemical history, gray coverage</td><td>eye shape, skin concerns</td></tr>
+<tr><td>Nail tech</td><td>neighborhood, budget, skin tone + undertone (color recs)</td><td>hair, eye shape</td></tr>
+<tr><td>Brow / lash</td><td>eye shape, brow density, skin tone</td><td>hair type, chemical history</td></tr>
+<tr><td>Derm (later)</td><td>Fitzpatrick, undertone, concerns, ancestry</td><td>hair, budget</td></tr>
+</table></div>
+
+<h2 id="content">Cold-start content</h2>
+<p><strong>Structure, not conversation.</strong> Three formats seed the archive before anyone is chatting.</p>
+<ul>
+<li><strong>Outcome cards.</strong> Photo, provider, service, price, facet snapshot, and a rebook yes or no. Two hundred cards from fifty founding members makes the directory feel alive on day one.</li>
+<li><strong>Post-transaction prompts.</strong> The spend tracker already knows she spent money at a merchant on Tuesday. Ask for a ten-second rating. Zero-effort, purchase-verified content is the advantage Reddit and TikTok cannot copy.</li>
+<li><strong>Ask-a-segment threads.</strong> "4C, color-treated, UWS: who does your gloss?" Founding members answer within the day.</li>
+</ul>
+<h3>Recruit the founding cohort for coverage, not convenience</h3>
+<p>A NYC consultant network drifts toward one demographic. Build a coverage table across the facets and recruit against the gaps. Keep the cohort in a WhatsApp or Discord group for the first month while you build, then migrate them in.</p>
+<h3>Founder-authored content twice a week</h3>
+<p>Ranked lists like "colorists who do lived-in balayage on level 2 Asian hair, rated by six members" are both SEO pages and group-chat-shareable objects.</p>
+<div class="tw"><table>
+<tr><th>Month-one content target</th><th>Number</th></tr>
+<tr><td>Founding members</td><td class="num">50–100</td></tr>
+<tr><td>Outcome cards</td><td class="num">200</td></tr>
+<tr><td>Members who post at least once</td><td class="num">30%</td></tr>
+<tr><td>Founder-authored ranked lists</td><td class="num">8</td></tr>
+</table></div>
+
+<h2 id="moderation">What moderation costs</h2>
+<div class="tw"><table>
+<tr><th>Stage</th><th>Setup</th><th>Approximate cost</th></tr>
+<tr><td>Under 2k members</td><td>Founder plus two volunteer mods with founding-member status</td><td class="num">~5 hrs / week</td></tr>
+<tr><td>Every post and review</td><td>LLM pre-screen (Haiku 4.5): spam, provider self-promotion, medical claims, doxxing</td><td class="num">&lt; $10 / day at 1,000 items</td></tr>
+<tr><td>Over 5k monthly actives</td><td>Part-time community manager, 20 hrs / week</td><td class="num">$2.5k–3.5k / month</td></tr>
+</table></div>
+<h3>Four rules to write before launch</h3>
+<p>Providers will contact you within two weeks. Have these ready.</p>
+<ul>
+<li><strong>Astroturfing.</strong> Reviews need verified spend or an account with real age and declared facets.</li>
+<li><strong>Negative reviews.</strong> New York defamation exposure means a documented takedown and dispute process, and keeping receipts.</li>
+<li><strong>Medical content.</strong> Derm and biomarker talk gets a disclaimer and a block on dosage discussion.</li>
+<li><strong>Body content.</strong> No numeric weight-loss goals in cohorts. Protects the community's tone and your liability.</li>
+</ul>
+
+<h2 id="build">The first 90 days</h2>
+<p><strong>Stack.</strong> Next.js, Postgres on Supabase, faceted search via Typesense or pgvector, an LLM for tagging and moderation. Your RAG experience maps directly to "ask the community" retrieval over facet-stamped posts, which is the feature that makes the archive compound.</p>
+<div class="phase"><div class="d">Days 1–30</div><ul>
+<li>Data model: members, facets (versioned), providers, services, reviews, posts, facet snapshots.</li>
+<li>Provider ingestion pipeline, half scraped and half manual.</li>
+<li>Facet onboarding with reference charts.</li>
+<li>Directory MVP: vertical, neighborhood, "people like me."</li>
+<li>Founding cohort running in a group chat in parallel.</li>
+</ul></div>
+<div class="phase"><div class="d">Days 31–60</div><ul>
+<li>Outcome cards and reviews.</li>
+<li>Post-transaction prompt wired to the spend tracker.</li>
+<li>Similarity-scored feed.</li>
+<li>Provider claim flow with license verification.</li>
+<li>Migrate the group chat into the product.</li>
+</ul></div>
+<div class="phase"><div class="d">Days 61–90</div><ul>
+<li>Follow-provider and move alerts.</li>
+<li>Ask-a-segment threads.</li>
+<li>LLM moderation queue with a human review lane.</li>
+<li>Provider self-serve profiles.</li>
+<li>Weekly metrics dashboard.</li>
+</ul></div>
+<div class="tw"><table>
+<tr><th>Day-90 success criteria</th><th>Target</th></tr>
+<tr><td>Members</td><td class="num">100</td></tr>
+<tr><td>Attributed reviews</td><td class="num">300</td></tr>
+<tr><td>Members with five or more facets declared</td><td class="num">40%</td></tr>
+<tr><td>Directory searches returning three or more "people like me" results</td><td class="num">60%</td></tr>
+<tr><td>Members who posted at least once in month one</td><td class="num">30%</td></tr>
+</table></div>
+
+<h2 id="risks">Real risks</h2>
+<div class="risk"><b>Sparsity</b><p>Segment × vertical × neighborhood is combinatorial and most cells stay empty for a long time. Similarity scores instead of hard filters, and the narrow launch footprint, are the mitigations. No second city until the search-coverage metric holds.</p></div>
+<div class="risk"><b>Sensitive data</b><p>Ancestry, skin, body, and eventually biomarkers joined to transaction history is a profile that demands real care. Treat it under the New York SHIELD Act now, encrypt at rest, opt in per facet, and make privacy a visible product feature. The biomarker layer needs HIPAA-adjacent design from day one.</p></div>
+<div class="risk"><b>Provider backlash</b><p>Being rated by segment will irritate some providers. The dispute process and the "experienced with" framing keep this defensible.</p></div>
+<div class="risk"><b>Monetization pressure</b><p>Paid placement kills the trust that is the whole product. Plan for provider verified-pro subscriptions and a member subscription tied to the ops-for-body layer. Not ads, and not a booking take-rate you don't own.</p></div>
+<div class="risk"><b>Scope for a solo builder</b><p>No booking, no chat, no native app in the first 90 days. Each is a month you don't have.</p></div>
+
+<footer>Companion prototype: <a href="./">open the People Like Me app</a>. The facet engine, directory, provider pages and feed all run in the browser.</footer>
+</main>
+</div>
+</body>
+</html>
