@@ -39,8 +39,8 @@
   }
 
   // ---------- Small renderers ----------
-  const HUES = { p1:'#8A3B5C', p2:'#4B4E9B', p3:'#A0522D', p4:'#5C7A3F', p5:'#B04A7A', p6:'#2F6B7A', p7:'#7A4E9B', p8:'#B0542D', p9:'#3F6B5C', p10:'#6B3FA0' };
-  const hue = id => HUES[id] || `hsl(${[...id].reduce((a, c) => a + c.charCodeAt(0), 0) % 360} 40% 45%)`;
+  const HUES = { p1:'#2F6B4F', p2:'#4F7A2E', p3:'#B58A1E', p4:'#2E7A6B', p5:'#6A8F2A', p6:'#1E6B5C', p7:'#8A9A1E', p8:'#3A8A5A', p9:'#C29A2A', p10:'#4A7F3F' };
+  const hue = id => HUES[id] || `hsl(${80 + [...id].reduce((a, c) => a + c.charCodeAt(0), 0) % 90} 38% 42%)`;
   const initials = n => n.split(' ').map(w => w[0]).slice(0, 2).join('');
   const av = (id, name, cls = '') => `<div class="av ${cls}" style="background:${hue(id)}">${initials(name)}</div>`;
   function ring(s) {
