@@ -1,22 +1,22 @@
 :root{
-  --bg:#FBF8E8;--surface:#FFFFFF;--surface2:#F2F0D8;--ink:#1E2B22;--muted:#5F6B5C;--line:#E1E3C9;
-  --accent:#2E8B57;--accent-ink:#FFFFFF;--accent-soft:#DFF2E3;
-  --sun:#F5C842;--sun-soft:#FCEFC0;
-  --good:#237A4A;--good-soft:#DCF0E0;--warn:#9A6A00;--warn-soft:#FBEFC2;
-  --ring:#DCDFC4;--shadow:0 1px 2px rgba(30,43,34,.06),0 8px 24px rgba(30,43,34,.07);
+  --bg:#FBF1C4;--surface:#FFFBEA;--surface2:#F4E7AE;--ink:#2B2A1E;--muted:#6F6A50;--line:#EADCA0;
+  --accent:#5E8A63;--accent-ink:#FFFFFF;--accent-soft:#E3ECD6;
+  --sun:#F2CF5B;--sun-soft:#F7E6A0;
+  --good:#4C7A51;--good-soft:#E0EBD5;--warn:#9A6A00;--warn-soft:#F7E2A3;
+  --ring:#E6D791;--shadow:0 1px 2px rgba(60,50,20,.06),0 8px 24px rgba(60,50,20,.08);
   --radius:14px;--nav-h:64px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#111F18;--surface:#182A20;--surface2:#22382B;--ink:#EEF3E4;--muted:#A6B4A0;--line:#2E4536;
-  --accent:#6FD39A;--accent-ink:#0E1F15;--accent-soft:#1E3A2A;
-  --sun:#F3CF5C;--sun-soft:#3A3416;
-  --good:#8FDDB0;--good-soft:#1E3A2C;--warn:#F0CF6A;--warn-soft:#3A3116;--ring:#34493B;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  --bg:#2A3A30;--surface:#34473B;--surface2:#3F5446;--ink:#F1EFDF;--muted:#B5C1AC;--line:#4A5F50;
+  --accent:#E6D67A;--accent-ink:#2A3A30;--accent-soft:#4A5638;
+  --sun:#F0DA7C;--sun-soft:#55603A;
+  --good:#B3D8A3;--good-soft:#3E5A44;--warn:#F0C86A;--warn-soft:#5A4E2A;--ring:#4E6354;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.28);
 }}
 :root[data-theme="dark"]{
-  --bg:#111F18;--surface:#182A20;--surface2:#22382B;--ink:#EEF3E4;--muted:#A6B4A0;--line:#2E4536;
-  --accent:#6FD39A;--accent-ink:#0E1F15;--accent-soft:#1E3A2A;
-  --sun:#F3CF5C;--sun-soft:#3A3416;
-  --good:#8FDDB0;--good-soft:#1E3A2C;--warn:#F0CF6A;--warn-soft:#3A3116;--ring:#34493B;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  --bg:#2A3A30;--surface:#34473B;--surface2:#3F5446;--ink:#F1EFDF;--muted:#B5C1AC;--line:#4A5F50;
+  --accent:#E6D67A;--accent-ink:#2A3A30;--accent-soft:#4A5638;
+  --sun:#F0DA7C;--sun-soft:#55603A;
+  --good:#B3D8A3;--good-soft:#3E5A44;--warn:#F0C86A;--warn-soft:#5A4E2A;--ring:#4E6354;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.28);
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}

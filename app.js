@@ -39,7 +39,7 @@
   }
 
   // ---------- Small renderers ----------
-  const HUES = { p1:'#2F6B4F', p2:'#4F7A2E', p3:'#B58A1E', p4:'#2E7A6B', p5:'#6A8F2A', p6:'#1E6B5C', p7:'#8A9A1E', p8:'#3A8A5A', p9:'#C29A2A', p10:'#4A7F3F' };
+  const HUES = { p1:'#7A8F5A', p2:'#5E8A63', p3:'#C4A244', p4:'#6E8F7C', p5:'#9AA24A', p6:'#4F7D6A', p7:'#B99A3A', p8:'#6B9A70', p9:'#D2B14E', p10:'#7F9B62' };
   const hue = id => HUES[id] || `hsl(${80 + [...id].reduce((a, c) => a + c.charCodeAt(0), 0) % 90} 38% 42%)`;
   const initials = n => n.split(' ').map(w => w[0]).slice(0, 2).join('');
   const av = (id, name, cls = '') => `<div class="av ${cls}" style="background:${hue(id)}">${initials(name)}</div>`;
