@@ -8,6 +8,7 @@
   const S = { tab:'find', vert:'colorist', plm:true, open:null, feedVert:'all', q:'', follows:new Set(['p2','p8']), posts:[...D.POSTS], you:{ ...D.DEFAULT_YOU } };
   try { const saved = JSON.parse(localStorage.getItem('plm.you') || 'null'); if (saved) S.you = { ...D.DEFAULT_YOU, ...saved }; } catch (e) {}
   const save = () => { try { localStorage.setItem('plm.you', JSON.stringify(S.you)); } catch (e) {} };
+  try { S.intro = localStorage.getItem('plm.intro') !== 'seen'; } catch (e) { S.intro = true; }
 
   // ---------- Similarity engine ----------
   const ORD = { hair:D.HAIR, skin:D.SKIN, budget:D.BUDGET, tex:D.TEX };
@@ -52,6 +53,13 @@
   const lic = p => p.lic ? '<span class="badge">NYS license ✓</span>' : '<span class="badge warn">license pending</span>';
   const youSummary = () => `${S.you.hair} · ${S.you.tex} · ${S.you.chem} · ${S.you.skin} ${S.you.under} · ${S.you.eye} · ${S.you.hood}`;
 
+  // First-visit explainer: the core idea in one line, plus the way to try it.
+  function introNote() {
+    const sample = JSON.stringify(S.you) === JSON.stringify(D.DEFAULT_YOU);
+    return `<div class="how" role="note"><div><b>How it works:</b> providers and reviews are ranked by how closely the reviewers match <i>you</i> — hair, skin, eyes, neighborhood and budget. ${sample ? 'You\u2019re browsing as a sample profile.' : 'This list is ranked for your profile.'}</div>`
+      + `<div class="how-actions"><button class="how-cta" data-tab="me">${sample ? 'Try your own facets' : 'Edit your facets'}</button><button class="how-x" data-intro>Got it</button></div></div>`;
+  }
+
   // ---------- Screens ----------
   function find() {
     if (S.open) return provider(S.open);
@@ -65,6 +73,7 @@
       <div class="eyebrow">NYC · ${D.PROVIDERS.filter(p => p.vert === S.vert).length} vetted</div>
       <h1>Find a ${D.SINGULAR[S.vert]}</h1>
       <p class="sub">Ranked for your ${w.slice(0, -1).join(', ')} and ${w.slice(-1)}. Providers tag what they are experienced with; they never see your facets.</p>
+      ${S.intro ? introNote() : ''}
       <div class="seg" role="tablist">${Object.entries(D.VERTICALS).map(([v, l]) => `<button role="tab" aria-selected="${v === S.vert}" class="${v === S.vert ? 'on' : ''}" data-vert="${v}">${l}</button>`).join('')}</div>
       <label class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="q" type="search" placeholder="Search names, studios, specialties" value="${esc(S.q)}" autocomplete="off"></label>
       <div class="switch"><div><div class="l">People like me</div><div class="d">${S.plm ? 'Sorted by similarity, nothing hidden' : 'Alphabetical'}</div></div><button class="tog" role="switch" aria-checked="${S.plm}" aria-label="People like me" data-plm></button></div>
@@ -177,7 +186,7 @@
 
   // ---------- Events ----------
   document.addEventListener('click', e => {
-    const t = e.target.closest('[data-tab],[data-vert],[data-feed],[data-open],[data-back],[data-plm],[data-follow],[data-post],[data-facet],[data-reset],[data-toast],[data-ask]');
+    const t = e.target.closest('[data-tab],[data-vert],[data-feed],[data-open],[data-back],[data-plm],[data-follow],[data-post],[data-facet],[data-reset],[data-toast],[data-ask],[data-intro]');
     if (!t) return;
     const d = t.dataset;
     if (d.tab) { S.tab = d.tab; S.open = null; scrollTop(); }
@@ -192,6 +201,7 @@
     else if (d.facet) { S.you[d.facet] = d.val; save(); }
     else if ('reset' in d) { S.you = { ...D.DEFAULT_YOU }; save(); toast('Back to the demo profile.'); }
     else if (d.toast) { toast(d.toast); return; }
+    else if ('intro' in d) { S.intro = false; try { localStorage.setItem('plm.intro', 'seen'); } catch (e) {} }
     render();
   });
   document.addEventListener('input', e => { if (e.target.id === 'q') { S.q = e.target.value; const pos = e.target.selectionStart; render(); const el = $('#q'); el.focus(); el.setSelectionRange(pos, pos); } });
